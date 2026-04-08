@@ -1,0 +1,25 @@
+function [outputArg1,outputArg2] = PowerSim(time,sat_xyz, sun_xyz, angles, opMode)
+%POWERSIM Summary of this function goes here
+%   INPUTS:
+%   time (float): time elapsed since the start of the simulation in seconds
+%   sat_xyz (1x3 float array): EarthFixed XYZ vector of the satellite
+%   sun_xyz (1x3 float array): EarthFixed XYZ vector of the Sun
+%   angles  (1x4 float array): Beta angle, euler angle 1, euler angle 2,
+%   euler angle 3. [I don't understand this so it's up to you to interpret
+%   these values and see if they make sense. The satellite is
+%   Earth-oriented]
+%   opMode (int): 1 - safe mode, 2 - nominal mode, 3 - peak mode [SUBJECT
+%   TO CHANGE]
+%   ADDITIONALLY: There is a text file in the github that has eclipse data
+%   that you can parse using claude or something
+%
+%   OUTPUTS:
+%   You should output any data needed to make a plot in the main file.
+%   chargeLevel (float): Current Battery level in Wh
+%
+%   Using these inputs you should generate any relevant plots you come up
+%   with. The output of this function needs to be the data you need updated
+%   each time step to display in an animation. The animation will be in the
+%   main function.
+end
+

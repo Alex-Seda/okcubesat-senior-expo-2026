@@ -1,0 +1,46 @@
+%% ──────────────────────────────── SETTINGS ──────────────────────────────
+filename    = "GMAT_output.txt";
+Re          = 6378.1363;   % Earth radius (km)
+H           = 650;         % Orbital altitude (km)
+incl        = 45;          % Inclinition (deg)
+e_min       = 10;          % Minimum elevation angle (deg)
+
+%% ──────────────────────────────── GMAT PULL ─────────────────────────────
+GMAT_data = readmatrix('GMAT_output.txt');
+
+% Assign columns to named variables
+time        = GMAT_data(:, 1);   % Elapsed seconds
+
+gs_x        = GMAT_data(:, 2);   % GroundStation1 EarthFixed X (km)
+gs_y        = GMAT_data(:, 3);   % GroundStation1 EarthFixed Y (km)
+gs_z        = GMAT_data(:, 4);   % GroundStation1 EarthFixed Z (km)
+
+sun_x       = GMAT_data(:, 5);   % CubeSat EarthFixed X (km)
+sun_y       = GMAT_data(:, 6);   % CubeSat EarthFixed Y (km)
+sun_z       = GMAT_data(:, 7);   % CubeSat EarthFixed Z (km)
+
+sat_x       = GMAT_data(:, 8);   % CubeSat EarthFixed X (km)
+sat_y       = GMAT_data(:, 9);   % CubeSat EarthFixed Y (km)
+sat_z       = GMAT_data(:, 10);  % CubeSat EarthFixed Z (km)
+
+beta_angle  = GMAT_data(:, 11);  % CubeSat EarthFixed Beta angle (deg)
+
+eul1        = GMAT_data(:, 12);  % CubeSat EarthFixed Euler angle 1 (deg)
+eul2        = GMAT_data(:, 13);  % CubeSat EarthFixed Euler angle 1 (deg)
+eul3        = GMAT_data(:, 14);  % CubeSat EarthFixed Euler angle 1 (deg)
+
+sat_vxyz       = GMAT_data(:, 15:17);   % CubeSat EarthFixed velocity (km/s)
+
+sat_xyz     = [sat_x, sat_y, sat_z];
+sun_xyz     = [sun_x, sun_y, sun_z];
+GS_xyz      = [gs_x, gs_y, gs_z];
+angles      = [beta_angle, eul1, eul2, eul3];
+
+
+clear sat_x sat_y sat_z gs_x gs_y gs_z sun_x sun_y  sun_z beta_angle eul1 eul2 eul3 GMAT_data
+
+%% TO:DO
+% Calculate all relevant vectors for sims who need it. 
+% Que frames
+% Save as mp4
+% Live update with user input? Might be slow

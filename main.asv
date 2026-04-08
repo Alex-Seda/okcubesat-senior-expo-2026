@@ -1,0 +1,28 @@
+%% ──────────────────────────────── SETTINGS ──────────────────────────────
+filename    = "GMAT_output.txt";
+Re          = 6378.1363;   % Earth radius (km)
+H           = 650;         % Orbital altitude (km)
+incl        = 45;          % Incliniation (deg)
+e_min       = 10;          % Minimum elevation angle (deg)
+
+%% ──────────────────────────────── SETTINGS ──────────────────────────────
+GMAT_data = readmatrix('GMAT_output.txt');
+
+% Assign columns to named variables
+time        = GMAT_data(:, 1);   % Elapsed seconds
+
+sat_x       = GMAT_data(:, 2);   % CubeSat EarthFixed X (km)
+sat_y       = GMAT_data(:, 3);   % CubeSat EarthFixed Y (km)
+sat_z       = GMAT_data(:, 4);   % CubeSat EarthFixed Z (km)
+
+gs_x        = GMAT_data(:, 5);   % GroundStation1 EarthFixed X (km)
+gs_y        = GMAT_data(:, 6);   % GroundStation1 EarthFixed Y (km)
+gs_z        = GMAT_data(:, 7);   % GroundStation1 EarthFixed Z (km)
+
+sat_xyz     = [sat_x, sat_y, sat_z];
+GS_xyz      = [gs_x, gs_y, gs_z];
+
+clear sat_x sat_y sat_z gs_x gs_y gs_z GMAT_data
+
+fprintf('Loaded %d rows\n', size(GMAT_data, 1));
+fprintf('Time span: %.2f to %.2f seconds\n', time(1), time(end));
