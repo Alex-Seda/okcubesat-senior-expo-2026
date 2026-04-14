@@ -1,4 +1,4 @@
-function [chargeLevel, genPower] = PowerSim(time, sat_xyz, sun_xyz, sat_vxyz, angles, opMode)
+function [chargeLevel, genPower] = PowerSim(time, sat_xyz, sun_xyz, sat_vxyz, opMode)
 %POWERSIM Summary of this function goes here
 %   INPUTS:
 %   time (float): time elapsed since the start of the simulation in seconds

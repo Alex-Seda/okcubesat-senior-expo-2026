@@ -4,6 +4,7 @@ Re          = 6378.1363;   % Earth radius (km)
 H           = 650;         % Orbital altitude (km)
 incl        = 45;          % Inclinition (deg)
 e_min       = 10;          % Minimum elevation angle (deg)
+frequency   = 435e6;       % Communication Frequency (Hz)
 
 %% ──────────────────────────────── GMAT PULL ─────────────────────────────
 GMAT_data = readmatrix('GMAT_output.txt');
@@ -35,6 +36,7 @@ sat_xyz     = [sat_x, sat_y, sat_z];
 sun_xyz     = [sun_x, sun_y, sun_z];
 GS_xyz      = [gs_x, gs_y, gs_z];
 angles      = [beta_angle, eul1, eul2, eul3];
+orbit_params = [Re,H,incl,e_min];
 
 
 clear sat_x sat_y sat_z gs_x gs_y gs_z sun_x sun_y  sun_z beta_angle eul1 eul2 eul3 GMAT_data
@@ -44,3 +46,16 @@ clear sat_x sat_y sat_z gs_x gs_y gs_z sun_x sun_y  sun_z beta_angle eul1 eul2 e
 % Que frames
 % Save as mp4
 % Live update with user input? Might be slow
+
+% Initialize functions
+CommSim(orbit_params);
+
+% Initialize storage arrays
+numsteps = numel(time);
+chargeLevel = zeros(numsteps,1);
+genPower = zeros(numsteps,1);
+inContact = zeros(numsteps,1);
+% Testing
+for i = 1:numsteps
+    inContact(i) = CommSim(orbit_params, time(i), sat_xyz(i,:), GS_xyz(i,:), sat_vxyz(i,:), frequency, 2);
+end

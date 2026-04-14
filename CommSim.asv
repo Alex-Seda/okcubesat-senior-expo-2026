@@ -28,8 +28,8 @@ if nargin == 1
         cfg.L_pol = 3;                 % Polarization loss in dB
         cfg.L_misc = 3;                % Miscellaneous loss in dB
         cfg.atmospheric_loss = 2.1;    % Atmospheric loss in dB (NOT IMPLEMENTED)
-        cfg.TSys_d = 1100;      % Effective noise temperature at GS rx in K
-        cfg.TSys_u = 500;         % Effective noise temperature at Sat rx in K
+        cfg.downlink_Tsys = 1100;      % Effective noise temperature at GS rx in K
+        cfg.uplink_Tsys = 500;         % Effective noise temperature at Sat rx in K
         cfg.R = 19200;                 % System data rate in bps
         cfg.P_t = 1;                   % Transmitter power in dBW
         cfg.G_r = 17;                  % Receiver gain in dBi (GS)
@@ -41,8 +41,8 @@ if nargin == 1
         nadir_max  = asind(sind(rho) * cosd(cfg.e_min)); % degrees
         cfg.CEA_max = 90 - cfg.e_min - nadir_max;   % degrees
         clear rho nadir_max;
+        inContact = 1;
         initialized = true;
-        return
     end
 else
     if initialized == false
@@ -55,8 +55,7 @@ else
 dot_prod = dot(sat_xyz, GS_xyz);
 mag_a    = norm(sat_xyz);
 mag_b    = norm(GS_xyz);
-CEA      = acos(dot_prod / (mag_a * mag_b));
-CEA      = rad2deg(CEA);
+CEA      = rad2deg(acos(dot_prod / (mag_a * mag_b)));
 
 % Slant range and elevation
 gs2sat    = sat_xyz - GS_xyz;
@@ -68,7 +67,7 @@ elevation = rad2deg(asin(dot(gs2sat, gs_zenith) / S));
 valid_position = [time, S, CEA, sat_xyz, GS_xyz, elevation];
 
 % Contact flag
-inContact = CEA < cfg.CEA_max && elevation > cfg.e_min;
+inContact = CEA < cfg.CEA_max;
 valid_position = [valid_position, inContact];
 
 %% ───────────────────── Earth-Oriented Gain ──────────────────────────────
@@ -118,7 +117,7 @@ end
 L_tot = FSPL + L_a + L_iono + cfg.L_misc + cfg.L_pol;
 
 %% ───────────────────── Eb/No ────────────────────────────────────────────
-Eb_No = cfg.P_t - cfg.L_t + cfg.G_r + Gt_dBi - L_tot ...
-      - 10*log10(cfg.k * cfg.TSys_d) - 10*log10(cfg.R);
+Eb_No = cfg.P_t - cfg.L_t + cG_r + Gt_dBi - L_tot ...
+      - 10*log10(k * downlink_Tsys) - 10*log10(R);
 end
 
